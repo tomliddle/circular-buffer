@@ -12,7 +12,7 @@ class CircularBufferTest extends WordSpec with Matchers with BeforeAndAfterEach 
 			"create the correct length buffer" in {
 				val buffer = CircularBuffer[Int](5)
 
-				buffer.length shouldBe(5)
+				buffer.length shouldBe 5
 			}
 
 			"throw a InvalidArgumentException when trying to create a 0 length buffer" in {
@@ -52,6 +52,32 @@ class CircularBufferTest extends WordSpec with Matchers with BeforeAndAfterEach 
 				buffer.tail.tail.headOption shouldEqual Some(3)
 				buffer.tail.tail.tail.headOption shouldEqual Some(4)
 				buffer.tail.tail.tail.tail.headOption shouldEqual Some(5)
+			}
+
+			"retrieve only 3 added elements" in {
+				val buffer = CircularBuffer[Int](5).insert(1).insert(2).insert(3)
+
+				buffer.headOption shouldEqual Some(1)
+				buffer.tail.headOption shouldEqual Some(2)
+				buffer.tail.tail.headOption shouldEqual Some(3)
+				buffer.tail.tail.tail.headOption shouldEqual None
+			}
+
+			"add 7 elements in a CB of size 5 and overwrite oldest" in {
+				val buffer = CircularBuffer[Int](5).insert(1).insert(2).insert(3).insert(4).insert(5).insert(6).insert(7)
+
+				buffer.headOption shouldEqual Some(3)
+				buffer.tail.headOption shouldEqual Some(4)
+				buffer.tail.tail.headOption shouldEqual Some(5)
+				buffer.tail.tail.tail.headOption shouldEqual Some(6)
+				buffer.tail.tail.tail.tail.headOption shouldEqual Some(7)
+			}
+
+			"add 7 elements in a CB of size 2 and overwrite oldest" in {
+				val buffer = CircularBuffer[Int](2).insert(1).insert(2).insert(3).insert(4).insert(5).insert(6).insert(7)
+
+				buffer.headOption shouldEqual Some(6)
+				buffer.tail.headOption shouldEqual Some(7)
 			}
 
 		}
