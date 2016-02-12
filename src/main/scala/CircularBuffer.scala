@@ -10,9 +10,9 @@ trait CircularBuffer[T] {
 
 	def insert(t: T): CircularBuffer[T] = CircularBuffer(buffer.updated(startIdx, Some(t)), startIdx, endIdx)
 
-	def take: (Option[T], CircularBuffer[T]) = {
-		(buffer(startIdx), CircularBuffer(buffer, (startIdx + 1) % length, endIdx))
-	}
+	def headOption: Option[T] = buffer(startIdx)
+
+	def tail: CircularBuffer[T] = CircularBuffer(buffer, (startIdx + 1) % length, endIdx)
 
 }
 

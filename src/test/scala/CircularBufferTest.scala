@@ -23,8 +23,23 @@ class CircularBufferTest extends WordSpec with Matchers with BeforeAndAfterEach 
 				catch {
 					case iae: IllegalArgumentException => // Expected behaviour
 				}
-
 			}
+		}
+
+		"adding" should {
+
+			"add a new element and retrieve it" in {
+				val buffer = CircularBuffer[Int](5).insert(4)
+
+				buffer.headOption shouldEqual Some(4)
+			}
+
+			"only retrieve an element once" in {
+				val buffer = CircularBuffer[Int](5).insert(4).tail
+
+				buffer.headOption shouldEqual None
+			}
+			
 		}
 	}
 }
