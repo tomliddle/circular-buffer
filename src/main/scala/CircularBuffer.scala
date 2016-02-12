@@ -8,7 +8,9 @@ trait CircularBuffer[T] {
 	protected val endIdx: Int
 	lazy val length = buffer.length
 
-	def insert(t: T): CircularBuffer[T] = CircularBuffer(buffer.updated(startIdx, Some(t)), startIdx, endIdx)
+	def insert(t: T): CircularBuffer[T] = {
+		CircularBuffer(buffer.updated(endIdx, Some(t)), startIdx, (endIdx + 1) % length)
+	}
 
 	def headOption: Option[T] = buffer(startIdx)
 

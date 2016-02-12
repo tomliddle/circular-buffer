@@ -28,18 +28,32 @@ class CircularBufferTest extends WordSpec with Matchers with BeforeAndAfterEach 
 
 		"adding" should {
 
-			"add a new element and retrieve it" in {
+			"add a new element" in {
 				val buffer = CircularBuffer[Int](5).insert(4)
 
 				buffer.headOption shouldEqual Some(4)
 			}
+
+		}
+
+		"retrieving" should {
 
 			"only retrieve an element once" in {
 				val buffer = CircularBuffer[Int](5).insert(4).tail
 
 				buffer.headOption shouldEqual None
 			}
-			
+
+			"retrieve all five elements" in {
+				val buffer = CircularBuffer[Int](5).insert(1).insert(2).insert(3).insert(4).insert(5)
+
+				buffer.headOption shouldEqual Some(1)
+				buffer.tail.headOption shouldEqual Some(2)
+				buffer.tail.tail.headOption shouldEqual Some(3)
+				buffer.tail.tail.tail.headOption shouldEqual Some(4)
+				buffer.tail.tail.tail.tail.headOption shouldEqual Some(5)
+			}
+
 		}
 	}
 }
